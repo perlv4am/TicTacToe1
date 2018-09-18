@@ -1,6 +1,4 @@
 language: csharp
 dist: trusty
-mono: none
-dotnet: 2.0.0
 script:
   - xbuild /p:Configuration=Debug TicTacToe1.sln
