@@ -10,14 +10,8 @@ namespace TicTacToe1
     {
         static void Main(string[] args)
         {
-            TicTacToe_Game game1 = new TicTacToe_Game(3);
+            TicTacToe_Game game1 = new TicTacToe_Game(dimension:3);
             game1.Play();
         }
-
-
-    }
-
- 
-
-
+    } 
 }
