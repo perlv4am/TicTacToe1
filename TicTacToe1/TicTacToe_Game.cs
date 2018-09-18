@@ -12,16 +12,15 @@ namespace TicTacToe1
         //Class that includes all information and methods about the game
 
         //initilize variables
-        public int dimensionOfTheField;  //Dimension of the grid
-        int[,] gameField;
-        public bool gameEnded = false;
+        public int DimensionOfTheField;  //Dimension of the grid
+        int[,] _gameField;
+        public bool GameEnded = false;
 
         //Constructor for the game
         public TicTacToe_Game(int dimension)
         {
-            dimensionOfTheField = dimension;
-            //gameField = new int[dimensionOfTheField, dimensionOfTheField];
-            gameField = new int[,] {{0,0,2},{0,0,0},{0,0,0},{0,0,0}};
+            DimensionOfTheField = dimension;
+            _gameField = new int[,] {{0,0,2},{0,0,0},{0,0,0},{0,0,0}};
         }
 
         //Human has crosses
@@ -29,9 +28,9 @@ namespace TicTacToe1
         {
             int X = Coordinates[0];
             int Y = Coordinates[1];
-            if (game.gameField[X, Y] == 0)
+            if (game._gameField[X, Y] == 0)
             {
-                game.gameField[X, Y] = 1;
+                game._gameField[X, Y] = 1;
                 return 1;
             }
             else
@@ -46,9 +45,9 @@ namespace TicTacToe1
             int X = Coordinates[0];
             int Y = Coordinates[1];
 
-            if (gameField[X, Y] == 0)
+            if (_gameField[X, Y] == 0)
             {
-                gameField[X, Y] = 2;
+                _gameField[X, Y] = 2;
                 return 1;
             }
             else
@@ -63,21 +62,21 @@ namespace TicTacToe1
             Console.WriteLine("Zadej X souradnici");
             int X_input = Convert.ToInt32(Console.ReadLine());
 
-            if (X_input >= dimensionOfTheField)
+            if (X_input >= DimensionOfTheField)
                 Console.WriteLine("Zahral jsi out");
 
             Console.WriteLine("Zadej Y souradnici");
             int Y_input = Convert.ToInt32(Console.ReadLine());
 
-            if (X_input >= dimensionOfTheField)
+            if (X_input >= DimensionOfTheField)
                 Console.WriteLine("Zahral jsi out");
 
             int[] Vstup = new int[] { X_input, Y_input };
             AddCross(Vstup, this);
 
-            if ((WhoWins(gameField) == 1) || (WhoWins(gameField) == 2) || (WhoWins(gameField) == 0))
+            if ((WhoWins(_gameField) == 1) || (WhoWins(_gameField) == 2) || (WhoWins(_gameField) == 0))
             {
-                gameEnded = true;
+                GameEnded = true;
             }
         }
 
@@ -85,13 +84,13 @@ namespace TicTacToe1
         public void PrintGame()
         {
             Console.Clear();
-            for (int ii = 0; ii < dimensionOfTheField; ii++)
+            for (int ii = 0; ii < DimensionOfTheField; ii++)
             {
-                Console.WriteLine(new string('-', 2 * dimensionOfTheField));
-                for (int jj = 0; jj < dimensionOfTheField; jj++)
+                Console.WriteLine(new string('-', 2 * DimensionOfTheField));
+                for (int jj = 0; jj < DimensionOfTheField; jj++)
                 {
                     Console.Write('|');
-                    Console.Write(Convert.ToString(gameField[ii, jj]));
+                    Console.Write(Convert.ToString(_gameField[ii, jj]));
                 }
                 Console.Write('|');
                 Console.Write('\n');
@@ -102,16 +101,16 @@ namespace TicTacToe1
         public void ComputerTurn()
         {
             int[] coordinates;
-            int[,] score = new int[dimensionOfTheField, dimensionOfTheField];
-            int[,] temporalField = new int[dimensionOfTheField, dimensionOfTheField];
+            int[,] score = new int[DimensionOfTheField, DimensionOfTheField];
+            int[,] temporalField = new int[DimensionOfTheField, DimensionOfTheField];
 
-            Parallel.For(0, dimensionOfTheField, ii =>
+            Parallel.For(0, DimensionOfTheField, ii =>
           {
-              for (int jj = 0; jj < dimensionOfTheField; jj++)
+              for (int jj = 0; jj < DimensionOfTheField; jj++)
               {
-                  if (gameField[ii, jj] == 0)
+                  if (_gameField[ii, jj] == 0)
                   {
-                      temporalField = (int[,])gameField.Clone();
+                      temporalField = (int[,])_gameField.Clone();
                       temporalField[ii, jj] = 2;
 
                         //Check if it is a winnig turn
@@ -141,9 +140,9 @@ namespace TicTacToe1
               }
           });            
             AddRing(FindMaximumCoordinates(score));
-            if ((WhoWins(gameField) == 1) || (WhoWins(gameField) == 2) || (WhoWins(gameField) == 0))
+            if ((WhoWins(_gameField) == 1) || (WhoWins(_gameField) == 2) || (WhoWins(_gameField) == 0))
             {
-                gameEnded = true;
+                GameEnded = true;
             }
         }
 
@@ -152,12 +151,12 @@ namespace TicTacToe1
         {
             int[,] temporalField;
             int[] coordinates = new int[] { 0, 0 };
-            int[,] score = new int[dimensionOfTheField, dimensionOfTheField];
+            int[,] score = new int[DimensionOfTheField, DimensionOfTheField];
 
             //Try all possibilities
-            for (int ii = 0; ii < dimensionOfTheField; ii++)
+            for (int ii = 0; ii < DimensionOfTheField; ii++)
             {
-                for (int jj = 0; jj < dimensionOfTheField; jj++)
+                for (int jj = 0; jj < DimensionOfTheField; jj++)
                 {
                     if (gameField[ii, jj] == 0)
                     {
@@ -221,9 +220,9 @@ namespace TicTacToe1
         private int FindMaximumValue(int[,] score)
         {
             int maximum = -1000;
-            for (int ii = 0; ii < dimensionOfTheField; ii++)
+            for (int ii = 0; ii < DimensionOfTheField; ii++)
             {
-                for (int jj = 0; jj < dimensionOfTheField; jj++)
+                for (int jj = 0; jj < DimensionOfTheField; jj++)
                 {
                     if ((score[ii, jj] > maximum) && (score[ii, jj] != 6))
                     {
@@ -239,9 +238,9 @@ namespace TicTacToe1
         {
             int[] coordinates = new int[2];
             int maximum = -1000;
-            for (int ii = 0; ii < dimensionOfTheField; ii++)
+            for (int ii = 0; ii < DimensionOfTheField; ii++)
             {
-                for (int jj = 0; jj < dimensionOfTheField; jj++)
+                for (int jj = 0; jj < DimensionOfTheField; jj++)
                 {
                     if ((score[ii, jj] > maximum)&&(score[ii, jj] != 6))
                     {
@@ -258,9 +257,9 @@ namespace TicTacToe1
         private int FindMinimumValue(int[,] score)
         {
             int minimum = 1000;
-            for (int ii = 0; ii < dimensionOfTheField; ii++)
+            for (int ii = 0; ii < DimensionOfTheField; ii++)
             {
-                for (int jj = 0; jj < dimensionOfTheField; jj++)
+                for (int jj = 0; jj < DimensionOfTheField; jj++)
                 {
                     if ((score[ii, jj] < minimum)&& (score[ii, jj] != 6))
                     {
@@ -277,9 +276,9 @@ namespace TicTacToe1
         {
             int[] coordinates = new int[2];
             int minimum = 1000;
-            for (int ii = 0; ii < dimensionOfTheField; ii++)
+            for (int ii = 0; ii < DimensionOfTheField; ii++)
             {
-                for (int jj = 0; jj < dimensionOfTheField; jj++)
+                for (int jj = 0; jj < DimensionOfTheField; jj++)
                 {
                     if ((score[ii, jj] < minimum)&& (score[ii, jj] != 6))
                     {
@@ -298,9 +297,9 @@ namespace TicTacToe1
             int length_Computer = 0;
 
             //Check rows
-            for (int ii = 0; ii < dimensionOfTheField; ii++)
+            for (int ii = 0; ii < DimensionOfTheField; ii++)
             {
-                for (int jj = 0; jj < dimensionOfTheField; jj++)
+                for (int jj = 0; jj < DimensionOfTheField; jj++)
                 {
                     if (gameField[ii, jj] == 1)
                     {
@@ -330,9 +329,9 @@ namespace TicTacToe1
 
 
             //Check columns
-            for (int jj = 0; jj < dimensionOfTheField; jj++)
+            for (int jj = 0; jj < DimensionOfTheField; jj++)
             {
-                for (int ii = 0; ii < dimensionOfTheField; ii++)
+                for (int ii = 0; ii < DimensionOfTheField; ii++)
                 {
 
                     if (gameField[ii, jj] == 1)
@@ -363,16 +362,16 @@ namespace TicTacToe1
 
 
             //Check diagonal
-            for (int ii = dimensionOfTheField - 1; ii >= 0; ii--)
+            for (int ii = DimensionOfTheField - 1; ii >= 0; ii--)
             {
-                for (int jj = 0; ii + jj < dimensionOfTheField; jj++)
+                for (int jj = 0; ii + jj < DimensionOfTheField; jj++)
                 {
-                    if (gameField[ii + jj, dimensionOfTheField - 1 - jj] == 1)
+                    if (gameField[ii + jj, DimensionOfTheField - 1 - jj] == 1)
                     {
                         length_Human++;
                         length_Computer = 0;
                     }
-                    else if (gameField[ii + jj, dimensionOfTheField - 1 - jj] == 2)
+                    else if (gameField[ii + jj, DimensionOfTheField - 1 - jj] == 2)
                     {
                         length_Human = 0;
                         length_Computer++;
@@ -394,16 +393,16 @@ namespace TicTacToe1
 
 
 
-            for (int ii = 0; ii < dimensionOfTheField; ii++)
+            for (int ii = 0; ii < DimensionOfTheField; ii++)
             {
-                for (int jj = 0; dimensionOfTheField - 1 - jj - ii >= 0; jj++)
+                for (int jj = 0; DimensionOfTheField - 1 - jj - ii >= 0; jj++)
                 {
-                    if (gameField[jj, dimensionOfTheField - 1 - jj - ii] == 1)
+                    if (gameField[jj, DimensionOfTheField - 1 - jj - ii] == 1)
                     {
                         length_Human++;
                         length_Computer = 0;
                     }
-                    else if (gameField[jj, dimensionOfTheField - 1 - jj - ii] == 2)
+                    else if (gameField[jj, DimensionOfTheField - 1 - jj - ii] == 2)
                     {
                         length_Human = 0;
                         length_Computer++;
@@ -426,9 +425,9 @@ namespace TicTacToe1
 
 
             //Check anti-diagonal
-            for (int ii = dimensionOfTheField - 1; ii > 0; ii--)
+            for (int ii = DimensionOfTheField - 1; ii > 0; ii--)
             {
-                for (int jj = 0; ii + jj < dimensionOfTheField; jj++)
+                for (int jj = 0; ii + jj < DimensionOfTheField; jj++)
                 {
                     if (gameField[ii + jj, jj] == 1)
                     {
@@ -457,9 +456,9 @@ namespace TicTacToe1
 
 
 
-            for (int ii = 0; ii < dimensionOfTheField; ii++)
+            for (int ii = 0; ii < DimensionOfTheField; ii++)
             {
-                for (int jj = 0; ii + jj < dimensionOfTheField; jj++)
+                for (int jj = 0; ii + jj < DimensionOfTheField; jj++)
                 {
                     if (gameField[jj, ii + jj] == 1)
                     {
@@ -488,9 +487,9 @@ namespace TicTacToe1
 
 
             //Check for draw game
-            for (int ii = 0; ii < dimensionOfTheField; ii++)
+            for (int ii = 0; ii < DimensionOfTheField; ii++)
             {
-                for (int jj = 0; jj < dimensionOfTheField; jj++)
+                for (int jj = 0; jj < DimensionOfTheField; jj++)
                 {
                     if (gameField[ii, jj] == 0)
                     {
@@ -511,16 +510,16 @@ namespace TicTacToe1
                 PrintGame();
                 GetInput();
                 PrintGame();
-                if (gameEnded)
+                if (GameEnded)
                 {
-                    winner = WhoWins(gameField);
+                    winner = WhoWins(_gameField);
                     break;
                 }
                 ComputerTurn();
                 PrintGame();
-                if (gameEnded)
+                if (GameEnded)
                 {
-                    winner = WhoWins(gameField);
+                    winner = WhoWins(_gameField);
                     break;
                 }
             }
