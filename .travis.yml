@@ -1,6 +1,6 @@
 language: csharp
 dist: trusty
-isntall:
+install:
   - nuget restore TicTacToe1.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
