@@ -24,13 +24,13 @@ namespace TicTacToe1
         }
 
         //Human has crosses
-        public int AddCross(int[] Coordinates, TicTacToe_Game game)
+        public int AddCross(int[] Coordinates)
         {
             int X = Coordinates[0];
             int Y = Coordinates[1];
-            if (game._gameField[X, Y] == 0)
+            if (_gameField[X, Y] == 0)
             {
-                game._gameField[X, Y] = 1;
+                _gameField[X, Y] = 1;
                 return 1;
             }
             else
@@ -72,7 +72,7 @@ namespace TicTacToe1
                 Console.WriteLine("Zahral jsi out");
 
             int[] Vstup = new int[] { X_input, Y_input };
-            AddCross(Vstup, this);
+            AddCross(Vstup);
 
             if ((WhoWins(_gameField) == 1) || (WhoWins(_gameField) == 2) || (WhoWins(_gameField) == 0))
             {
