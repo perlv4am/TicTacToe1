@@ -1,8 +1,9 @@
 language: csharp
+solution: TicTacToe1.sln
 dist: trusty
 install:
   - nuget restore TicTacToe1.sln
   - nuget install NUnit.Runners -Version 3.9.0 -OutputDirectory testrunner
 script:
-  - xbuild /p:Configuration=Debug TicTacToe1.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./TicTacToe1.Tests/bin/Debug/TicTacToe1.Tests.dll
+  - msbuild /p:Configuration=Release TicTacToe1.sln
+  - mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./TicTacToe1.Tests/bin/Release/TicTacToe1.Tests.dll
